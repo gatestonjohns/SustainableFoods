@@ -84,6 +84,16 @@ public class backendProcessing {
 
         return gradeWithSuggestion;
     }
+
+    public ArrayList<String> getNames() {
+        ArrayList<String> names = new ArrayList<String>();
+        for (foodObj f: totalFoodList)
+        {
+            names.add(f.getName());
+        }
+
+        return names;
+    }
 }
 
 /*
