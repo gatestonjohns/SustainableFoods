@@ -8,9 +8,15 @@ import dataObjs.macroPriorityObj;
 public class backendProcessing {
     private List<foodObj> totalFoodList = new ArrayList<foodObj>();
 
+    private float avgEmission=0;
+    private float avgLand=0;
+    private float avgWater=0;
+    private int rows=101;
+
     public backendProcessing(String csvFilename) {
         try {
             ReadFile(csvFilename);
+            averages();
         } catch (Exception e)
         {
             System.out.println("Error reading file.");
@@ -56,6 +62,25 @@ public class backendProcessing {
         scn.close();
     }
 
+    private void averages()
+    {  
+        float sumEmission = 0;
+        float sumLand = 0;
+        float sumWater = 0;
+
+        for (foodObj f : totalFoodList)
+        {
+            sumEmission += f.getEmissionsPer1kCals();
+            sumLand += f.getLandUsePer1kCals();
+            sumWater += f.getWaterUsePer1kCals();
+        }
+
+        avgEmission = sumEmission / rows;
+        avgLand = sumLand / rows;
+        avgWater = sumWater / rows;
+    }
+
+
     public void getIdealFoods(int moneyPriority, ecoPriorityObj ecoPs, macroPriorityObj macPs) {
         // here is where we do all ranking and return the ideal list of foods
 
@@ -76,9 +101,9 @@ public class backendProcessing {
             }
         }
 
+        //GRADEEE PLEASE
         // we now have all food objects that user eats, so lets grade and find a suggestion!
         String gradeWithSuggestion = "";
-
 
 
 
