@@ -1,3 +1,5 @@
+package dataObjs;
+
 public class foodObj {
     private String name;
     private float pricePerPound;

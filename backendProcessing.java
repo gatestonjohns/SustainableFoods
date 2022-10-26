@@ -1,15 +1,19 @@
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.nio.file.Path;
-import java.io.BufferedReader;
-import foodObj;
+
+import dataObjs.ecoPriorityObj;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import dataObjs.foodObj;
+import dataObjs.macroPriorityObj;
 
 public class backendProcessing {
-    private foodObj[] totalFoodList;
+    private List<foodObj> totalFoodList;
 
     public backendProcessing(String csvFilename) throws FileNotFoundException {
-        // here is where we need to read in the CSV and populate the foodObj[] list
+        // here is where we need to read in the CSV and populate the dataObjs.foodObj[] list
     }
 
     public void getIdealFoods(int moneyPriority, ecoPriorityObj ecoPs, macroPriorityObj macPs) {
@@ -18,7 +22,23 @@ public class backendProcessing {
         //WILL NOT BE VOID -- CHANGE RETURN TYPE!!!
     }
 
-    public void gradeWithSuggestions(foodObj[] inputFoods) {
+    public void gradeWithSuggestions(List<String> inputFoods) {
+        // initialize list of foods that user input to empty
+        List<foodObj> usersFoods = new ArrayList<>();
+
+        // populate list of user foods
+        for (foodObj food : totalFoodList) {
+            for (String currInputFood : inputFoods) {
+                if (Objects.equals(food.getName(), currInputFood)) {
+                    usersFoods.add(food);
+                    inputFoods.remove(currInputFood);
+                }
+            }
+        }
+
+
+
+
         // here is where we do grading and return the grade and a critique of the diet
 
         // WILL NOT BE VOID -- CHANGE RETURN TYPE!!!
