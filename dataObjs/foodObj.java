@@ -1,44 +1,84 @@
 package dataObjs;
 
 public class foodObj {
+    //Values from CSV
     private String name;
-    private float pricePerPound;
-    private int protein, fat, carb;
-    private float emissionsPer1kCals, landUsePer1kCals, waterUsePer1kCals;
+    private double emissionsPer1kCals, landUsePer1kCals, waterUsePer1kCals;
+    private double pricePerPound, normalizedPrice;
+    private int fat, protein, fiber, carb;
 
-    public foodObj(String name, float ppp, int protein, int fat, int carb, float emission, float landUse, float waterUse) {
+    //Calculated values
+    private double summationScore, ecoScore;
+
+    public foodObj(String name, double emissionsPer1kCals, double landUsePer1kCals,
+                     double waterUsePer1kCals, double pricePerPound,
+                     int fat, int protein, int fiber, int carb, double normalizedPrice)
+    {
         this.name = name;
-        this.pricePerPound = ppp;
-        this.protein = protein;
+        this.emissionsPer1kCals = emissionsPer1kCals;
+        this.landUsePer1kCals = landUsePer1kCals;
+        this.waterUsePer1kCals = waterUsePer1kCals;
+        this.pricePerPound = pricePerPound;
         this.fat = fat;
+        this.protein = protein;
+        this.fiber = fiber;
         this.carb = carb;
-        this.emissionsPer1kCals = emission;
-        this.landUsePer1kCals = landUse;
-        this.waterUsePer1kCals = waterUse;
+        this.normalizedPrice = normalizedPrice;
+
+        this.summationScore = summationScore();
+        this.ecoScore = 100-this.summationScore;
+        
     }
 
+    //calculate basic ecoScore. kinda shitty lol
+    private double summationScore()
+    {
+        return 0.07169*7*emissionsPer1kCals + 0.05656*4*landUsePer1kCals + 0.00202*waterUsePer1kCals;
+    }
+
+    //temporary tostring funct
+    public String tostring()
+    {
+    return name + " " + ecoScore;
+    }
+
+    ///
+    /// Getters for private variables
+    ///
     public String getName() {
         return name;
     }
-    public float getPricePerPound() {
+    public double getEmissionsPer1kCals() {
+        return emissionsPer1kCals;
+    }
+    public double getLandUsePer1kCals() {
+        return landUsePer1kCals;
+    }
+    public double getWaterUsePer1kCals() {
+        return waterUsePer1kCals;
+    }
+    public double getPricePerPound() {
         return pricePerPound;
     }
-    public int getProtein() {
-        return protein;
+    public double getNormalizedPrice() {
+        return normalizedPrice;
     }
     public int getFat() {
         return fat;
     }
+    public int getProtein() {
+        return protein;
+    }
+    public int getFiber() {
+        return fiber;
+    }
     public int getCarb() {
         return carb;
     }
-    public float getEmissionsPer1kCals() {
-        return emissionsPer1kCals;
+    public double getSummationScore() {
+        return summationScore;
     }
-    public float getLandUsePer1kCals() {
-        return landUsePer1kCals;
-    }
-    public float getWaterUsePer1kCals() {
-        return waterUsePer1kCals;
+    public double getEcoScore() {
+        return ecoScore;
     }
 }
