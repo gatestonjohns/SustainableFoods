@@ -32,7 +32,7 @@ public class backendProcessing {
 
         //Skip the CSV Headers
         for (int i = 0; i < 17; i++) {
-            scn.next();
+           scn.next();
         }
 
         //Iterate over CSV rows and store food objects
@@ -53,7 +53,7 @@ public class backendProcessing {
             int protein = Integer.parseInt(scn.next());
             int fiber = Integer.parseInt(scn.next());
             int carb = Integer.parseInt(scn.next());
-            double priceNormalized = Integer.parseInt(scn.next());
+            double priceNormalized = Double.parseDouble(scn.next());
 
             totalFoodList.add(new foodObj(name, normEmission, normLand, normwaterWithdrawal, normFat, normProtein, normFiber, normCarbs, emission, land, waterWithdrawal, price, fat, protein, fiber, carb, priceNormalized));
 
