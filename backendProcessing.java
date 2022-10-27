@@ -95,31 +95,33 @@ public class backendProcessing {
     }
 
     public double[] gradeWithSuggestions(List<String> inputFoods, double[] ranks) {
-        // initialize list of foods that user input to empty
-        List<foodObj> usersFoods = new ArrayList<>();
+        // parameters: List<String> is the list of the names of foods that the user selects
+        // double[] ranks is the values based on slider in the app.
+        double totalrank = ranks[0] + ranks[1] + ranks[2];
+        ranks[0] = ranks[0]/totalrank;
+        ranks[1] = ranks[1]/totalrank;
+        ranks[2] = ranks[2]/totalrank;
 
-        // populate list of user foods
-        for (foodObj food : totalFoodList) {
-            for (String currInputFood : inputFoods) {
-                if (Objects.equals(food.getName(), currInputFood)) {
-                    usersFoods.add(food);
-                    inputFoods.remove(currInputFood);
+
+        //System.out.println(totalFoodList.get(0).getName());
+        double[] gradeWithSuggestion = new double[inputFoods.size()];
+        int doublecount = 0;
+        int inputfoodscount = 0;
+        for (int i = 0; i < totalFoodList.size(); i++) {
+            //System.out.println(i);
+            if((totalFoodList.get(i).getName().equals(inputFoods.get(inputfoodscount)))){
+                double temp1 = totalFoodList.get(i).normEmission - avgEmission;
+                double temp2 = totalFoodList.get(i).normLand - avgLand;
+                double temp3 = totalFoodList.get(i).normwaterWithdrawal - avgWater;
+                gradeWithSuggestion[doublecount] = temp1 * Math.pow((1.0 - ranks[0]), -1) + temp2 * Math.pow((1.0 - ranks[1]), -1) + temp3 * Math.pow((1.0 - ranks[2]), -1);
+                doublecount++;
+                inputfoodscount++;
+                i = 0;
+                if (doublecount == inputFoods.size()) {
+                    break;
                 }
             }
         }
-
-        //GRADEEE PLEASE
-        // we now have all food objects that user eats, so lets grade and find a suggestion!
-        double[] gradeWithSuggestion = new double[inputFoods.size()];
-        for (int i = 0; i < inputFoods.size(); i++) {
-            double temp1 = usersFoods.get(i).normEmission - avgEmission;
-            double temp2 = usersFoods.get(i).normLand - avgLand;
-            double temp3 = usersFoods.get(i).normwaterWithdrawal - avgWater;
-
-            gradeWithSuggestion[i] = temp1 * Math.pow((1 - ranks[1]/5.0), -1) + temp2 * Math.pow((1 - ranks[2]/5.0), -1) + temp3 * Math.pow((1 - ranks[3]/5.0), -1);
-        }
-
-
         return gradeWithSuggestion;
     }
 
