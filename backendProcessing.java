@@ -11,7 +11,7 @@ public class backendProcessing {
     private float avgEmission=0;
     private float avgLand=0;
     private float avgWater=0;
-    private int rows=101;
+    private int rows=99;
 
     public backendProcessing(String csvFilename) {
         try {
@@ -31,13 +31,20 @@ public class backendProcessing {
         scn.useDelimiter(",|\\n");
 
         //Skip the CSV Headers
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 17; i++) {
             scn.next();
         }
 
         //Iterate over CSV rows and store food objects
-        while (totalFoodList.size() < 101 && scn.hasNextLine()) {
+        while (totalFoodList.size() < 99 && scn.hasNextLine()) {
             String name = scn.next();
+            double normEmission = Double.parseDouble(scn.next());
+            double normLand = Double.parseDouble(scn.next());
+            double normwaterWithdrawal = Double.parseDouble(scn.next());
+            double normFat = Double.parseDouble(scn.next());
+            double normProtein = Double.parseDouble(scn.next());
+            double normFiber = Double.parseDouble(scn.next());
+            double normCarbs = Double.parseDouble(scn.next());
             double emission = Double.parseDouble(scn.next());
             double land = Double.parseDouble(scn.next());
             double waterWithdrawal = Double.parseDouble(scn.next());
@@ -48,7 +55,7 @@ public class backendProcessing {
             int carb = Integer.parseInt(scn.next());
             double priceNormalized = Integer.parseInt(scn.next());
 
-            totalFoodList.add(new foodObj(name, emission, land, waterWithdrawal, price, fat, protein, fiber, carb, priceNormalized));
+            totalFoodList.add(new foodObj(name, normEmission, normLand, normwaterWithdrawal, normFat, normProtein, normFiber, normCarbs, emission, land, waterWithdrawal, price, fat, protein, fiber, carb, priceNormalized));
 
         }
 
@@ -70,9 +77,9 @@ public class backendProcessing {
 
         for (foodObj f : totalFoodList)
         {
-            sumEmission += f.getEmissionsPer1kCals();
-            sumLand += f.getLandUsePer1kCals();
-            sumWater += f.getWaterUsePer1kCals();
+            sumEmission += f.normEmission;
+            sumLand += f.normLand;
+            sumWater += f.normwaterWithdrawal;
         }
 
         avgEmission = sumEmission / rows;
@@ -87,7 +94,7 @@ public class backendProcessing {
         //WILL NOT BE VOID -- CHANGE RETURN TYPE!!!
     }
 
-    public String gradeWithSuggestions(List<String> inputFoods) {
+    public double[] gradeWithSuggestions(List<String> inputFoods, double[] ranks) {
         // initialize list of foods that user input to empty
         List<foodObj> usersFoods = new ArrayList<>();
 
@@ -103,8 +110,14 @@ public class backendProcessing {
 
         //GRADEEE PLEASE
         // we now have all food objects that user eats, so lets grade and find a suggestion!
-        String gradeWithSuggestion = "";
+        double[] gradeWithSuggestion = new double[inputFoods.size()];
+        for (int i = 0; i < inputFoods.size(); i++) {
+            double temp1 = usersFoods.get(i).normEmission - avgEmission;
+            double temp2 = usersFoods.get(i).normLand - avgLand;
+            double temp3 = usersFoods.get(i).normwaterWithdrawal - avgWater;
 
+            gradeWithSuggestion[i] = temp1 * Math.pow((1 - ranks[1]), -1) + temp2 * Math.pow((1 - ranks[2]), -1) + temp3 * Math.pow((1 - ranks[3]), -1);
+        }
 
 
         return gradeWithSuggestion;
