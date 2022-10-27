@@ -116,7 +116,7 @@ public class backendProcessing {
             double temp2 = usersFoods.get(i).normLand - avgLand;
             double temp3 = usersFoods.get(i).normwaterWithdrawal - avgWater;
 
-            gradeWithSuggestion[i] = temp1 * Math.pow((1 - ranks[1]), -1) + temp2 * Math.pow((1 - ranks[2]), -1) + temp3 * Math.pow((1 - ranks[3]), -1);
+            gradeWithSuggestion[i] = temp1 * Math.pow((1 - ranks[1]/5.0), -1) + temp2 * Math.pow((1 - ranks[2]/5.0), -1) + temp3 * Math.pow((1 - ranks[3]/5.0), -1);
         }
 
 
